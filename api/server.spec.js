@@ -13,4 +13,17 @@ describe('server.js', () => {
 
         })
     })
+
+    describe('POST /games', () => {
+        it('should return 201 when a new game is added', async () => {
+            const game = {
+                title: 'Centipede', genre: "Shoot 'em up", releaseYear: "1980"
+            }
+
+            const status = await request(server).post('/games')
+                .send(game)
+                .set('Accept', 'application/json')
+                .expect(201)
+        })
+    })
 })
