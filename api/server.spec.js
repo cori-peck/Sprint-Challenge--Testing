@@ -8,11 +8,20 @@ describe('server.js', () => {
             return request(server)
             .get('/')
             .then(response => {
+            
                 expect(response.status).toBe(200);
             })
 
         })
+
+        it('should return JSON', async () => {
+            const result = await request(server).get('/games')
+
+                expect(result.type).toBe('application/json')
+        })
     })
+
+
 
     describe('POST /games', () => {
         it('should return 201 when a new game is added', async () => {
@@ -20,10 +29,18 @@ describe('server.js', () => {
                 title: 'Centipede', genre: "Shoot 'em up", releaseYear: "1980"
             }
 
-            const status = await request(server).post('/games')
+            const result = await request(server).post('/games')
                 .send(game)
                 .set('Accept', 'application/json')
-                .expect(201)
+                
+                expect(result.status).toBe(201);
+        })
+
+        it('should return 422 with incomplete info', async () => {
+            const result = await request(server).post('/games')
+                .send({ genre: "Arcade", releaseYear: 1980 })
+
+                expect(result.status).toBe(422);
         })
     })
 })
