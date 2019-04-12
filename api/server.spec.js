@@ -14,6 +14,15 @@ describe('server.js', () => {
 
         })
 
+        it('should return an ok status code from the /games route', () => {
+            return request(server)
+            .get('/games')
+            .then(response => {
+
+                expect(response.status).toBe(200);
+            })
+        })
+
         it('should return JSON', async () => {
             const result = await request(server).get('/games')
 
@@ -26,7 +35,7 @@ describe('server.js', () => {
     describe('POST /games', () => {
         it('should return 201 when a new game is added', async () => {
             const game = {
-                title: 'Centipede', genre: "Shoot 'em up", releaseYear: "1980"
+                title: 'Space Invaders', genre: "Shoot 'em up", releaseYear: "1980"
             }
 
             const result = await request(server).post('/games')
@@ -41,6 +50,15 @@ describe('server.js', () => {
                 .send({ genre: "Arcade", releaseYear: 1980 })
 
                 expect(result.status).toBe(422);
+        })
+
+        it('should return info from newly added game', async () => {
+            const result = await request(server).post('/games')
+                .send({ title: "Dig Dug", genre: "Maze", releaseYear: 1982 })
+
+                expect(result.body).toHaveProperty('title')
+                expect(result.body).toHaveProperty('genre')
+                expect(result.body).toHaveProperty('releaseYear')
         })
     })
 })
