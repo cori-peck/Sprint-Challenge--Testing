@@ -8,5 +8,6 @@ module.exports = {
       filename: './data/gamesDb.sqlite3'
     },
     useNullAsDefault: true
-  },
+  }
+}
 
